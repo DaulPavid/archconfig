@@ -1,0 +1,17 @@
+! General settings
+URxvt.depth:             32
+URxvt.geometry:          90x30
+URxvt.transparent:       false
+URxvt.saveLines:         1000
+URxvt.internalBorder:    4
+URxvt.linespace:         0
+URxvt.scrollBar:         false
+
+! Fonts
+URxvt.allow_bold:        false
+URxvt.font: xft:DejaVu Sans Mono-10
+
+! URL
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: google-chrome-stable
+URxvt.matcher.button: 1

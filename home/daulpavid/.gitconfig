@@ -1,0 +1,8 @@
+[user]
+	email = <email>
+	name = Paul David
+[core]
+	editor = vim
+	whitespace = fix, -indent-with-non-tab, trailing-space, cr-at-eol, tabwidth=4
+[push]
+	default = simple
