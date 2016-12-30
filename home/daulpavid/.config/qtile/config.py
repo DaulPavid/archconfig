@@ -6,6 +6,7 @@ wmname = 'qtile'
 mod = 'mod4'
 
 colors = {'frame': '#000000',
+          'frame_focus': '#ffffff',
           'background': '#000000',
           'widget_frame': '#e0e0e0',
           'text': '#990000',
@@ -19,7 +20,7 @@ keys = [
     Key([mod, 'control'], 'q', lazy.shutdown()),
     Key([mod], 'r', lazy.spawncmd()),
     Key([mod], 'v', lazy.spawn('gvim')),
-    Key([mod], 'Return', lazy.spawn('xterm')),
+    Key([mod], 'Return', lazy.spawn('urxvt')),
     Key([mod], 'w',      lazy.window.kill()),
 
     Key([mod], 'Tab', lazy.layout.next()),
@@ -33,6 +34,8 @@ keys = [
     # Switch between windows in current stack pane
     Key([mod], 'k', lazy.layout.down()),
     Key([mod], 'j', lazy.layout.up()),
+    Key([mod], 'l', lazy.layout.right()),
+    Key([mod], 'h', lazy.layout.left()),
 
     # Move windows up or down in current stack
     Key([mod, 'control'], 'k', lazy.layout.shuffle_down()),
@@ -45,7 +48,7 @@ keys = [
     Key([mod], 'Tab', lazy.next_layout()),
 
     # Lock the screen
-    Key([mod], 'l', lazy.spawn('xlock')),
+    Key([mod, 'control'], 'l', lazy.spawn('xlock')),
     Key([], 'XF86Launch1', lazy.spawn('xlock')),
 
     # Control volume
@@ -88,8 +91,9 @@ dgroups_app_rules = []
 # Layouts
 layouts = [
     layout.Max(),
-    layout.Stack(num_stacks=2,border_width=0),
-    layout.Tile(border_width=0)
+    layout.Stack(num_stacks=2,border_focus=colors['frame_focus']),
+    layout.Tile(border_focus=colors['frame_focus']),
+    layout.Matrix(border_focus=colors['frame_focus'])
 ]
 
 # Screens and widget options
