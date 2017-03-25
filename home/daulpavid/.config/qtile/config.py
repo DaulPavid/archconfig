@@ -37,6 +37,9 @@ keys = [
     Key([mod], 'l', lazy.layout.right()),
     Key([mod], 'h', lazy.layout.left()),
 
+    # Move windows between stacks
+    Key([mod, 'control'], 'p', lazy.layout.client_to_next()),
+
     # Move windows up or down in current stack
     Key([mod, 'control'], 'k', lazy.layout.shuffle_down()),
     Key([mod, 'control'], 'j', lazy.layout.shuffle_up()),
