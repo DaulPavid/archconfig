@@ -1,5 +1,15 @@
-Pauly D. Archlinux Configuration
+DaulPavid Archlinux Configuration
 ================================
+
+<div align="left">
+  <a href="https://github.com/ellerbrock/open-source-badge/">
+    <img alt="OpenSource" src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" />
+  </a>
+
+  <a href="https://opensource.org/licenses/mit-license.php">
+    <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</div>
 
 These are various configuration files for my Arch installation.
 I try to build systems that allow for PCI passthrough for my VMs,
