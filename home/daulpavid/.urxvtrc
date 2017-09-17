@@ -9,7 +9,8 @@ URxvt.scrollBar:         false
 
 ! Fonts
 URxvt.allow_bold:        false
-URxvt.font: xft:DejaVu Sans Mono-10
+URxvt.font:              xft:DejaVu Sans Mono-10
+URxvt.letterSpace:       1
 
 ! URL
 URxvt.perl-ext-common: default,matcher
