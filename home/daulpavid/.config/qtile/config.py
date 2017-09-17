@@ -132,7 +132,7 @@ screens = [
                 widget.Systray(),
                 widget.Clock(format='%Y-%m-%d %H:%M %p'),
             ],
-            size=20,
+            size=22,
             background=colors['background'],
         ),
     ),
