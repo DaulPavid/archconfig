@@ -123,13 +123,15 @@ screens = [
                     border_color=colors['frame'],
                     samples=50
                 ),
-                widget.NetGraph(
-                    graph_color=colors['text'],
-                    border_color=colors['frame'],
-                    samples=50
-                ),
+                widget.Memory(),
+                widget.Sep(),
+                widget.Net(interface='enp2s0'),
+                widget.Sep(),
+                widget.TextBox(text='Volume ='),
                 widget.Volume(),
+                widget.Sep(),
                 widget.Systray(),
+                widget.Sep(),
                 widget.Clock(format='%Y-%m-%d %H:%M %p'),
             ],
             size=22,
