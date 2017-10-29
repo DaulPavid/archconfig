@@ -19,11 +19,10 @@ keys = [
     Key([mod, 'control'], 'r', lazy.restart()),
     Key([mod, 'control'], 'q', lazy.shutdown()),
     Key([mod], 'r', lazy.spawncmd()),
-    Key([mod], 'v', lazy.spawn('gvim')),
+    Key([mod], 'v', lazy.spawn('vim')),
     Key([mod], 'Return', lazy.spawn('urxvt')),
     Key([mod], 'w',      lazy.window.kill()),
 
-    Key([mod], 'Tab', lazy.layout.next()),
     Key([mod], 'Left', lazy.screen.prevgroup()),
     Key([mod], 'Right', lazy.screen.nextgroup()),
 
@@ -37,12 +36,20 @@ keys = [
     Key([mod], 'l', lazy.layout.right()),
     Key([mod], 'h', lazy.layout.left()),
 
+    # Switch focus between screens
+    Key([mod, 'shift'], 'h', lazy.to_screen(0)),
+    Key([mod, 'shift'], 'l', lazy.to_screen(1)),
+
     # Move windows between stacks
-    Key([mod, 'control'], 'p', lazy.layout.client_to_next()),
+    Key([mod, 'shift'], 'p', lazy.layout.client_to_next()),
 
     # Move windows up or down in current stack
-    Key([mod, 'control'], 'k', lazy.layout.shuffle_down()),
-    Key([mod, 'control'], 'j', lazy.layout.shuffle_up()),
+    Key([mod, 'shift'], 'k', lazy.layout.shuffle_down()),
+    Key([mod, 'shift'], 'j', lazy.layout.shuffle_up()),
+
+    # Opacity of a window (mod1 == alt)
+    Key([mod, 'mod1'], "Up", lazy.window.up_opacity()),
+    Key([mod, 'mod1'], "Down", lazy.window.down_opacity()),
 
     # Switch window focus to other pane(s) of stack
     Key([mod], 'space', lazy.layout.next()),
@@ -71,7 +78,7 @@ mouse = (
 
 bring_front_click = True
 cursor_warp = False
-follow_mouse_focus = True
+follow_mouse_focus = False
 
 # Groups
 groups = [
@@ -138,11 +145,27 @@ screens = [
             background=colors['background'],
         ),
     ),
+    Screen(),
 ]
 
+# Font settings, etc.
 widget_defaults = dict(
     font='DejaVu Sans Mono',
     fontsize=10,
 )
 
+# Monitor changes and settings
 auto_fullscreen = True
+
+@hook.subscribe.screen_change
+def restart_on_randr(qtile, ev):
+    qtile.log.debug("Restarting on screen change")
+    qtile.cmd_restart()
+
+@hook.subscribe.startup
+def qtile_is_ready():
+    qtile.ready = True
+
+def main(qtile):
+    qtile.ready = False
+    qtile.cmd_warning()
