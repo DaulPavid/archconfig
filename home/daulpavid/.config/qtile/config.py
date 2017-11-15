@@ -2,6 +2,10 @@ from libqtile import bar, hook, layout, widget
 from libqtile.command import lazy
 from libqtile.config import Click, Drag, Group, Key, Screen
 
+import os
+import subprocess
+import time
+
 wmname = 'qtile'
 mod = 'mod4'
 
@@ -158,14 +162,10 @@ widget_defaults = dict(
 auto_fullscreen = True
 
 @hook.subscribe.screen_change
-def restart_on_randr(qtile, ev):
-    qtile.log.debug("Restarting on screen change")
+def qtile_screen_change(qtile, ev):
     qtile.cmd_restart()
 
-@hook.subscribe.startup
-def qtile_is_ready():
-    qtile.ready = True
-
-def main(qtile):
-    qtile.ready = False
-    qtile.cmd_warning()
+@hook.subscribe.startup_complete
+def qtile_autostart():
+    home = os.path.expanduser('~')
+    subprocess.call([home + '/.config/qtile/scripts/screens.sh'])
