@@ -1,8 +1,10 @@
 [user]
-	email = <email>
-	name = Paul David
+    email = <email>
+    name = Paul David
 [core]
-	editor = vim
-	whitespace = fix, -indent-with-non-tab, trailing-space, cr-at-eol, tabwidth=4
+    editor = vim
+    whitespace = fix, -indent-with-non-tab, trailing-space, cr-at-eol, tabwidth=4
 [push]
-	default = simple
+    default = simple
+[merge]
+    conflictstyle = diff3
