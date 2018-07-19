@@ -8,3 +8,11 @@
     default = simple
 [merge]
     conflictstyle = diff3
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
+[grep]
+    lineNumber = true
+[alias]
+    d = difftool
