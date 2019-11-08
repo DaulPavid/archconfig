@@ -1,5 +1,6 @@
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
+--
+-- DaulPavid Awesome WM Configuration
+--
 pcall(require, "luarocks.loader")
 
 -- Standard awesome library
@@ -45,18 +46,27 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+theme_table = {
+    "pro-dark",         -- 1
+    "pro-light",        -- 2
+    "pro-medium-dark",  -- 3
+    "pro-medium-light"  -- 4
+}
+
+-- Selected theme
+theme = theme_table[3]
+
+-- Theme initialization
+theme_dir = os.getenv("HOME") .. "/.config/awesome/themes/" .. theme .. "/theme.lua"
+beautiful.init(theme_dir)
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
-editor = "vim"
+editor = os.getenv("EDITOR") or "gvim"
 editor_cmd = terminal .. " -e " .. editor
+screen_cmd = "xscreensaver-command -lock"
 
 -- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -74,9 +84,9 @@ awful.layout.layouts = {
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
+    awful.layout.suit.corner.ne,
+    awful.layout.suit.corner.sw,
+    awful.layout.suit.corner.se,
 }
 -- }}}
 
@@ -90,10 +100,12 @@ myawesomemenu = {
    { "quit", function() awesome.quit() end },
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
-                                  }
-                        })
+mymainmenu = awful.menu({
+    items = {
+        { "awesome", myawesomemenu, beautiful.awesome_icon },
+        { "open terminal", terminal }
+    }
+})
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
@@ -229,8 +241,13 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    -- XScreenSaver
+    awful.key({ modkey, "Control" }, "l", function () os.execute(screen_cmd) end,
+              {description = "lock screen", group = "hotkeys"}),
+    -- Hotkeys help
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
+              {description = "show help", group = "awesome"}),
+    -- Tags
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -238,18 +255,34 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
+    -- Direction-based client focus
     awful.key({ modkey,           }, "j",
         function ()
-            awful.client.focus.byidx( 1)
+            awful.client.focus.bydirection("down")
+            if client.focus then client.focus:raise() end
         end,
-        {description = "focus next by index", group = "client"}
+        {description = "focus down", group = "client"}
     ),
     awful.key({ modkey,           }, "k",
         function ()
-            awful.client.focus.byidx(-1)
+            awful.client.focus.bydirection("up")
+            if client.focus then client.focus:raise() end
         end,
-        {description = "focus previous by index", group = "client"}
+        {description = "focus up", group = "client"}
     ),
+    awful.key({ modkey,           }, "h",
+        function()
+            awful.client.focus.bydirection("left")
+            if client.focus then client.focus:raise() end
+        end,
+        {description = "focus left", group = "client"}),
+    awful.key({ modkey,           }, "l",
+        function()
+            awful.client.focus.bydirection("right")
+            if client.focus then client.focus:raise() end
+        end,
+        {description = "focus right", group = "client"}),
+
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
@@ -272,6 +305,10 @@ globalkeys = gears.table.join(
             end
         end,
         {description = "go back", group = "client"}),
+
+    -- File Manager
+    awful.key({ modkey, "Shift"   }, "r", function () awful.spawn("urxvt -e ranger") end,
+              {description = "Launch ranger file manager", group = "launcher"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -326,7 +363,27 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    -- ALSA volume control
+    awful.key({  }, "XF86AudioRaiseVolume",
+        function ()
+            os.execute(string.format("amixer -q set %s 5%%+", beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "volume up", group = "hotkeys"}),
+    awful.key({  }, "XF86AudioLowerVolume",
+        function ()
+            os.execute(string.format("amixer -q set %s 5%%-", beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "volume down", group = "hotkeys"}),
+    awful.key({  }, "XF86AudioMute",
+        function ()
+            os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
+            beautiful.volume.update()
+        end,
+        {description = "toggle mute", group = "hotkeys"})
 )
 
 clientkeys = gears.table.join(
