@@ -4,8 +4,15 @@
 [core]
     editor = vim
     whitespace = fix, -indent-with-non-tab, trailing-space, cr-at-eol, tabwidth=4
+    excludesfile = ~/.gitignore
+[alias]
+    a = add
+    ct = commit -v
+    co = checkout
+    pf = push --force-with-lease
+    s = status
 [push]
-    default = simple
+    ff = only
 [merge]
     conflictstyle = diff3
 [diff]
@@ -16,3 +23,5 @@
     lineNumber = true
 [alias]
     d = difftool
+[commit]
+    template = ~/.gitmessage
