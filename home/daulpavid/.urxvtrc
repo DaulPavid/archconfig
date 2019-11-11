@@ -13,5 +13,5 @@ URxvt.font:              xft:DejaVu Sans Mono-10
 
 ! URL
 URxvt.perl-ext-common: default,matcher
-URxvt.url-launcher: google-chrome-stable
+URxvt.url-launcher: firefox
 URxvt.matcher.button: 1
